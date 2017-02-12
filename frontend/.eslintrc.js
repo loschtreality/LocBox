@@ -1,7 +1,6 @@
 module.exports = {
     "env": {
         "browser": true,
-        "node": true,
         "commonjs": true,
         "es6": true
     },
@@ -9,7 +8,7 @@ module.exports = {
     "rules": {
         "indent": [
             "error",
-            2
+            4
         ],
         "linebreak-style": [
             "error",
@@ -17,11 +16,12 @@ module.exports = {
         ],
         "quotes": [
             "error",
-            "double"
+            "single"
         ],
         "semi": [
             "error",
             "never"
-        ]
+        ],
+        "no-console": 0
     }
 };

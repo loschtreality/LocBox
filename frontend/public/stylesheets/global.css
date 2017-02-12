@@ -1,8 +1,12 @@
 /* Elements */
 
 body {
-  background: #333;
-  color: #c3c3c3;
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
 }
 
 .spinner {
