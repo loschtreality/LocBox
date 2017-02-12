@@ -1,23 +1,20 @@
 // DOM Elements
-const imageSection = document.querySelector("#check-or-x")
-
-
 const pageURL = document.location.href
 
 // Helper Methods
 
 function getParameterByName(name, url) {
     if (!url) { url = window.location.href }
-    name = name.replace(/[\[\]]/g, "\\$&")
-    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)")
+    name = name.replace(/[\[\]]/g, '\\$&')
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
     const results = regex.exec(url)
     if (!results) return null;
-    if (!results[2]) return "";
-    return decodeURIComponent(results[2].replace(/\+/g, " "))
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '))
 }
 // query string:
-// var myURL = "localhost:3000/confirmation?foo=lorem&bar=&baz"
-// var foo = getParameterByName('foo', myURL) ---> "lorem"
+// var myURL = 'localhost:3000/confirmation?foo=lorem&bar=&baz'
+// var foo = getParameterByName('foo', myURL) ---> 'lorem'
 
 
 function validateLocation(queryLocation, geolocation) {
@@ -27,17 +24,34 @@ function validateLocation(queryLocation, geolocation) {
   })
 }
 
-function isInRange(/* coordinates A *//* coordinates B */) {
-  return true
+function isInRange(queryLocation, geolocation) {
+  const longDiff = Math.abs(queryLocation.longitude - geolocation.longitude)
+  const latDiff = Math.abs(queryLocation.latitude - geolocation.latitude)
+
+  return false //longDiff > 50 || latDiff > 50
 }
 
-function renderStatus(status) {
-  // Remove spinner element
-  // Change text content in span
-  if (status === "check") {
-    // Add check element
+function renderStatus(verified = false, message = "") {
+  const imageSection = document.querySelector('#check-or-x')
+  const statusMessage = document.querySelector('#status-message')
+  const spinner = imageSection.querySelector('.spinner')
+
+  spinner.remove()
+  statusMessage.textContent = ""
+
+  if (verified) {
+    const check = document.createElement('div')
+    check.classList.add('checkmark')
+    statusMessage.textContent = "Confirmed"
+    imageSection.appendChild(check)
+
   } else {
-    // Add X element
+    const xMark = document.createElement('div')
+    xMark.innerHTML = "x"
+    xMark.classList.add('x-mark')
+    statusMessage.textContent = message
+    imageSection.appendChild(xMark)
+
   }
 }
 
@@ -45,22 +59,24 @@ function renderStatus(status) {
 // Listeners & Events
 
 window.addEventListener('DOMContentLoaded', ev => {
-  const queryLocation = getParameterByName("location", pageURL)
-  if ("geolocation" in navigator) {
+  // const queryLocation = getParameterByName('location', pageURL)
+  const queryLocation = { latitude: 100, longitude: 200} // <-- dummy object
+
+  if ('geolocation' in navigator) {
     // Check geolocation
     navigator.geolocation.getCurrentPosition(async function (position) { // ignore linter warning on function
       const { latitude, longitude } = await position.coords
-      validateLocation("Query Lat and long in an {}", { latitude, longitude }).then(locationValid => {
-        if (locationValid) {
-          // Render a check to the screen
-          renderStatus("check")
-        } else {
-          // Render an X with an appropriate message
-          renderStatus("x")
-        }
+      console.table(position)
+
+      validateLocation({ queryLat: queryLocation.latitude, queryLong: queryLocation.longitude }, { latitude, longitude })
+      .then(locationValid => {
+        const message = locationValid ? "Location Confirmed" : "Transaction denied, location incorrect"
+        renderStatus(locationValid, message)
       }).catch(err => console.error(err))
     })
+
+
   } else {
-    renderStatus("x")
+    renderStatus(false, "Could not find location")
   }
 })

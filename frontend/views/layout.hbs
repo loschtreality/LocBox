@@ -7,10 +7,12 @@
     <!-- Styles  -->
     <link rel="stylesheet" href="/stylesheets/global.css">
     <link rel="stylesheet" href="/stylesheets/confirm.css">
+    <link rel="stylesheet" href="/stylesheets/transactions.css">
 
-    <!-- Scripts -->
     <script src="/javascripts/confirm.js" charset="utf-8"></script>
-
+    {{#if secure}}
+    <script src="/javascripts/transactions.js" charset="utf-8"></script>
+    {{/if}}
   </head>
   <body>
     {{{body}}}
