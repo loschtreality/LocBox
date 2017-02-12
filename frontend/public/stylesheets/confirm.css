@@ -1,12 +1,3 @@
-.head-title {
-  color: magenta;
-  font-size: 5em;
-}
-
-.spinner-center {
-  margin: 0 auto
-}
-
 main {
   display: flex;
   flex-direction: column;
@@ -25,10 +16,15 @@ main {
   align-items: center;
 }
 
+.head-title {
+  color: magenta;
+  font-size: 5em;
+}
+
 .spinner {
     border: 16px solid #f3f3f3;
     border-top: 16px solid #3498db;
-    border-bottom: 16px solid yellow;
+    border-bottom: 16px solid green;
     border-radius: 50%;
     width: 120px;
     height: 120px;
@@ -108,11 +104,130 @@ main {
 
 
 .x-mark {
-  height: 200px;
+  height: 150px;
   width: 200px;
   font-weight: bold;
   font-size: 150px;
   color: red;
   text-align: center;
   line-height: 100px;
+}
+
+
+.inline-block {
+  display: -moz-inline-stack;
+  display: inline-block;
+}
+
+.countdown {
+  margin: 50px auto;
+  text-align: center;
+  color: magenta;
+  padding: 20px;
+  margin-top: 50px;
+  font-family: 'Oswald', sans-serif; /* NOTE: come back to this */
+  font-weight: 300;
+}
+.countdown .time-circle {
+  display: -moz-inline-stack;
+  display: inline-block;
+  -moz-border-radius: 50%;
+  -o-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  font-size: 54px;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  text-align: center;
+  position: relative;
+  background: transparent;
+}
+.countdown .time-circle:hover {
+  /*background: #46babd;*/
+  -webkit-transition: background 0.3s;
+  -moz-transition: background 0.3s;
+  -ms-transition: background 0.3s;
+  -o-transition: background 0.3s;
+}
+.countdown .time-circle .time {
+  display: -moz-inline-stack;
+  display: inline-block;
+  font-size: 54px;
+}
+.countdown .time-circle .time-name {
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  left: 0;
+  line-height: 16px;
+  color: #000;
+  opacity: 0.2;
+}
+.countdown .time-circle .progress {
+  width: 126px;
+  height: 126px;
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  z-index: -9;
+  background-color: #f6f6f6;
+  background-color: rgba(0, 0, 0, 0.1);
+  -moz-border-radius: 50%;
+  -o-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.countdown .time-circle .progress:after {
+  content: '';
+  width: 6px;
+  height: 70px;
+  background: #fff;
+  position: absolute;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transform-origin: 0% 100%;
+  -moz-transform-origin: 0% 100%;
+  -ms-transform-origin: 0% 100%;
+  -o-transform-origin: 0% 100%;
+  transform-origin: 0% 100%;
+}
+.countdown .dots {
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 20px 5px;
+  font-size: 54px;
+  -webkit-animation: dots 1s infinite;
+  -moz-animation: dots 1s infinite;
+  -ms-animation: dots 1s infinite;
+}
+@-moz-keyframes dots {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+@-webkit-keyframes dots {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+@keyframes dots {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
