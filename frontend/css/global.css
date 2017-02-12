@@ -27,15 +27,10 @@ body {
   margin-top: 20px;
 }
 
-.block {
-  margin-top: 50px;
-}
-
-.col-centered {
-  float: none;
-  margin: 0 auto;
-}
-
 .box-it {
   border: 1px solid red;
+}
+
+.hidden {
+  display: none;
 }

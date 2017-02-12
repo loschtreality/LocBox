@@ -1,5 +1,5 @@
 // DOM Elements
-const imageSection = document.querySelector('#check-or-x')
+const imageSection = document.querySelector("#check-or-x")
 
 
 const pageURL = document.location.href
@@ -12,7 +12,7 @@ function getParameterByName(name, url) {
     const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)")
     const results = regex.exec(url)
     if (!results) return null;
-    if (!results[2]) return '';
+    if (!results[2]) return "";
     return decodeURIComponent(results[2].replace(/\+/g, " "))
 }
 // query string:
@@ -33,6 +33,7 @@ function isInRange(/* coordinates A *//* coordinates B */) {
 
 function renderStatus(status) {
   // Remove spinner element
+  // Change text content in span
   if (status === "check") {
     // Add check element
   } else {
@@ -47,7 +48,7 @@ window.addEventListener('DOMContentLoaded', ev => {
   const queryLocation = getParameterByName("location", pageURL)
   if ("geolocation" in navigator) {
     // Check geolocation
-    navigator.geolocation.getCurrentPosition(async function (position) {
+    navigator.geolocation.getCurrentPosition(async function (position) { // ignore linter warning on function
       const { latitude, longitude } = await position.coords
       validateLocation("Query Lat and long in an {}", { latitude, longitude }).then(locationValid => {
         if (locationValid) {
