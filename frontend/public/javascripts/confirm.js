@@ -16,16 +16,23 @@ function getParameterByName(name, url) {
 
 function validateLocation(queryLocation, geolocation) {
   return new Promise((resolve, reject) => {
-    const isValid = isInRange(queryLocation, geolocation)
+    const isValid = isInRange(queryLocation.latitude, queryLocation.longitude, geolocation.latitude, geolocation.longitude, "K")
     resolve(isValid)
   })
 }
 
-function isInRange(queryLocation, geolocation) {
-  const longDiff = Math.abs(queryLocation.longitude - geolocation.longitude)
-  const latDiff = Math.abs(queryLocation.latitude - geolocation.latitude)
-
-  return true //longDiff > 50 || latDiff > 50
+function isInRange(lat1, lon1, lat2, lon2, unit) {
+  const radlat1 = Math.PI * lat1/180
+  const radlat2 = Math.PI * lat2/180
+  const theta = lon1-lon2
+  const radtheta = Math.PI * theta/180
+  let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  dist = Math.acos(dist)
+  dist = dist * 180/Math.PI
+  dist = dist * 60 * 1.1515
+  if (unit=="K") { dist = dist * 1.609344 }
+  if (unit=="N") { dist = dist * 0.8684 }
+  return dist <= 0.05 // 0.05 kilometers === 50 meters
 }
 
 function renderStatus(verified = false, message = '') {
@@ -72,7 +79,8 @@ function renderStatus(verified = false, message = '') {
 // Event Listeners
 
 $(function() {
-  // const queryLocation = getParameterByName('location', pageURL)
+  // const queryLat = getParameterByName('lat', pageURL)
+  // const queryLong = getParameterByName('long', pageURL)
   const queryLocation = { latitude: 100, longitude: 200} // <-- dummy object
 
   // Check for geolocation enabeled
@@ -81,12 +89,22 @@ $(function() {
       const { latitude, longitude } = await position.coords
       console.table(position)
 
-      validateLocation({ queryLat: queryLocation.latitude, queryLong: queryLocation.longitude }, { latitude, longitude })
+      validateLocation(queryLocation, { latitude, longitude })
       .then(locationValid => {
         const message = locationValid ? 'Location Confirmed' : 'Transaction denied, location incorrect'
         renderStatus(locationValid, message)
       }).catch(err => console.error(err))
     })
+
+
+  } else if (google.loader.ClientLocation) {
+    const { latitude, longitude } = google.loader.ClientLocation
+
+    validateLocation(queryLocation, { latitude, longitude })
+    .then(locationValid => {
+      const message = locationValid ? 'Location Confirmed' : 'Transaction denied, location incorrect'
+      renderStatus(locationValid, message)
+    }).catch(err => console.error(err))
 
 
   } else {
