@@ -10,7 +10,7 @@ function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, ' '))
 }
 // query string:
-// var myURL = 'localhost:3000/confirmation?foo=lorem&bar=&baz'
+// var myURL = 'localhost:3000/?foo=lorem&bar=&baz'
 // var foo = getParameterByName('foo', myURL) ---> 'lorem'
 
 
@@ -43,6 +43,12 @@ function renderStatus(verified = false, message = '') {
     check.classList.add('checkmark')
     imageSection.appendChild(check)
 
+    // start countdown
+    const time = new Date()
+    const app = new Countdown({
+      //properties
+      endDate: time.setSeconds(time.getSeconds() + 90)
+    });
 
 
   } else if (!verified && !checkmark) {
@@ -158,12 +164,4 @@ $(function() {
     }
   });
   window.Countdown = Countdown;
-});
-
-$(function() {
-  const time = new Date()
-  const app = new Countdown({
-    //properties
-    endDate: time.setSeconds(time.getSeconds() + 15)
-  });
 });
