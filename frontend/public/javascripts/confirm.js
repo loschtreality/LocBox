@@ -79,15 +79,14 @@ function renderStatus(verified = false, message = '') {
 // Event Listeners
 
 $(function() {
-  // const queryLat = getParameterByName('lat', pageURL)
-  // const queryLong = getParameterByName('long', pageURL)
+  // const queryLat = Number(getParameterByName('lat', pageURL))
+  // const queryLong = Number(getParameterByName('long', pageURL))
   const queryLocation = { latitude: 100, longitude: 200} // <-- dummy object
 
   // Check for geolocation enabeled
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(async function (position) { // ignore linter warning on function
       const { latitude, longitude } = await position.coords
-      console.table(position)
 
       validateLocation(queryLocation, { latitude, longitude })
       .then(locationValid => {
