@@ -1,3 +1,19 @@
 .head-title {
   color: magenta;
+  font-size: 5em;
+}
+
+.spinner-center {
+  margin: 0 auto
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+#information {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
