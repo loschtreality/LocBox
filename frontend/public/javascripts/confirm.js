@@ -79,18 +79,33 @@ function renderStatus(verified = false, message = '') {
 // Event Listeners
 
 $(function() {
-  // const queryLat = Number(getParameterByName('lat', pageURL))
-  // const queryLong = Number(getParameterByName('long', pageURL))
-  const queryLocation = { latitude: 100, longitude: 200} // <-- dummy object
+  const pageURL = window.location.search
+  const queryLat = Number(getParameterByName('lat', pageURL))
+  const queryLong = Number(getParameterByName('lon', pageURL))
+  const queryLocation = { latitude: queryLat, longitude: queryLong }
+
+    console.log(queryLocation, "Query Location")
 
   // Check for geolocation enabeled
   if ('geolocation' in navigator) {
+    console.log('1')
     navigator.geolocation.getCurrentPosition(async function (position) { // ignore linter warning on function
       const { latitude, longitude } = await position.coords
-
+console.log('2')
       validateLocation(queryLocation, { latitude, longitude })
       .then(locationValid => {
+        console.log('3')
         const message = locationValid ? 'Location Confirmed' : 'Transaction denied, location incorrect'
+
+        $.ajax({
+          method: "GET",
+          url: `https://10.3.32.64:3000/validate?auth=${locationValid}`,
+          crossOrigin: true,
+          dataType: "jsonp",
+          success: (success) => console.log(success),
+          error: (err) => console.error(err)
+        })
+
         renderStatus(locationValid, message)
       }).catch(err => console.error(err))
     })
@@ -98,7 +113,7 @@ $(function() {
 
   } else if (google.loader.ClientLocation) {
     const { latitude, longitude } = google.loader.ClientLocation
-
+console.log('4')
     validateLocation(queryLocation, { latitude, longitude })
     .then(locationValid => {
       const message = locationValid ? 'Location Confirmed' : 'Transaction denied, location incorrect'
@@ -107,6 +122,7 @@ $(function() {
 
 
   } else {
+    console.log('5')
     // Render an X with message if location denied or not found
     renderStatus(false, 'Could not find location')
   }
